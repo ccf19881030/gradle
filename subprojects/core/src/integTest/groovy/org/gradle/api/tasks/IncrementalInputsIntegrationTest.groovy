@@ -295,4 +295,8 @@ class IncrementalInputsIntegrationTest extends AbstractIncrementalTasksIntegrati
         where:
         propertyDefinition << ["abstract DirectoryProperty getInput()", "abstract RegularFileProperty getInput()", "File input"]
     }
+
+    def "provides normalized paths"() {
+
+    }
 }

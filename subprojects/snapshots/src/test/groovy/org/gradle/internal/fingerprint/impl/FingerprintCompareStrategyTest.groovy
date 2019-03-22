@@ -294,14 +294,14 @@ class FingerprintCompareStrategyTest extends Specification {
     }
 
     def added(String path) {
-        DefaultFileChange.added(path, "test", FileType.RegularFile)
+        DefaultFileChange.added(path, "test", FileType.RegularFile, path)
     }
 
     def removed(String path) {
-        DefaultFileChange.removed(path, "test", FileType.RegularFile)
+        DefaultFileChange.removed(path, "test", FileType.RegularFile, path)
     }
 
     def modified(String path, FileType previous, FileType current) {
-        DefaultFileChange.modified(path, "test", previous, current)
+        DefaultFileChange.modified(path, "test", previous, current, path)
     }
 }

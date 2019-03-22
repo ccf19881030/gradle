@@ -53,14 +53,16 @@ public class NonIncrementalInputChanges implements InputChangesInternal {
     }
 
     private static Stream<FileChange> getAllFileChanges(CurrentFileCollectionFingerprint currentFileCollectionFingerprint) {
-        return currentFileCollectionFingerprint.getFingerprints().keySet().stream().map(RebuildFileChange::new);
+        return currentFileCollectionFingerprint.getFingerprints().entrySet().stream().map(entry -> new RebuildFileChange(entry.getKey(), entry.getValue().getNormalizedPath()));
     }
 
     private static class RebuildFileChange implements FileChange, InputFileDetails {
         private final String path;
+        private final String normalizedPath;
 
-        public RebuildFileChange(String path) {
+        public RebuildFileChange(String path, String normalizedPath) {
             this.path = path;
+            this.normalizedPath = normalizedPath;
         }
 
         @Override
@@ -71,6 +73,11 @@ public class NonIncrementalInputChanges implements InputChangesInternal {
         @Override
         public ChangeType getChangeType() {
             return ChangeType.ADDED;
+        }
+
+        @Override
+        public String getNormalizedPath() {
+            return normalizedPath;
         }
 
         @Override

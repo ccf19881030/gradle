@@ -30,25 +30,27 @@ public class DefaultFileChange implements Change, FileChange, InputFileDetails {
     private final String title;
     private final FileType previousFileType;
     private final FileType currentFileType;
+    private final String normalizedPath;
 
-    public static DefaultFileChange added(String path, String title, FileType currentFileType) {
-        return new DefaultFileChange(path, ChangeTypeInternal.ADDED, title, FileType.Missing, currentFileType);
+    public static DefaultFileChange added(String path, String title, FileType currentFileType, String normalizedPath) {
+        return new DefaultFileChange(path, ChangeTypeInternal.ADDED, title, FileType.Missing, currentFileType, normalizedPath);
     }
 
-    public static DefaultFileChange removed(String path, String title, FileType previousFileType) {
-        return new DefaultFileChange(path, ChangeTypeInternal.REMOVED, title, previousFileType, FileType.Missing);
+    public static DefaultFileChange removed(String path, String title, FileType previousFileType, String normalizedPath) {
+        return new DefaultFileChange(path, ChangeTypeInternal.REMOVED, title, previousFileType, FileType.Missing, normalizedPath);
     }
 
-    public static DefaultFileChange modified(String path, String title, FileType previousFileType, FileType currentFileType) {
-        return new DefaultFileChange(path, ChangeTypeInternal.MODIFIED, title, previousFileType, currentFileType);
+    public static DefaultFileChange modified(String path, String title, FileType previousFileType, FileType currentFileType, String normalizedPath) {
+        return new DefaultFileChange(path, ChangeTypeInternal.MODIFIED, title, previousFileType, currentFileType, normalizedPath);
     }
 
-    private DefaultFileChange(String path, ChangeTypeInternal change, String title, FileType previousFileType, FileType currentFileType) {
+    private DefaultFileChange(String path, ChangeTypeInternal change, String title, FileType previousFileType, FileType currentFileType, String normalizedPath) {
         this.path = path;
         this.change = change;
         this.title = title;
         this.previousFileType = previousFileType;
         this.currentFileType = currentFileType;
+        this.normalizedPath = normalizedPath;
     }
 
     @Override
@@ -88,6 +90,11 @@ public class DefaultFileChange implements Change, FileChange, InputFileDetails {
         // TODO wolfs: Shall we do something about file type Missing -> File
         // should this be file type ADDED instead of MODIFIED
         return change.getPublicType();
+    }
+
+    @Override
+    public String getNormalizedPath() {
+        return normalizedPath;
     }
 
     public ChangeTypeInternal getType() {
